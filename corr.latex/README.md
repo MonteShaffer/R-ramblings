@@ -6,13 +6,13 @@
 - This uses standard r@{}l to align decimal points and does NOT use dcolumn or siunitx
 
 
-##Basic example
+##Fundamental usage
 ```
 source("R-latex-corr.txt");
 corr.latex(x, file="sample.tex");
 ```
 
-##Optional parameter (rotate me)
+##Basic Example with Optional parameter (rotate me)
 ```
 data(iris);
 x = iris[,1:4];
