@@ -1,0 +1,42 @@
+
+
+
+
+\documentclass{article}
+
+
+\pagestyle{empty}
+\usepackage{booktabs,tabularx,caption,multicol,rotating}
+\usepackage[letterpaper, margin=0.25in]{geometry}
+
+
+\begin{document}
+\begin{table}[!htbp]
+\hrulefill
+\vspace{-.10cm}
+\caption{Descriptive Statistics and Correlation Analysis} \label{table:correlation}
+\vspace{.10cm}
+\begin{tabularx}{\textwidth}{r@{ \ \ }p{3cm} r@{}lr@{}lr@{}lr@{}lr@{}lr@{}lr@{}l}
+\toprule
+\multicolumn{2}{c}{\textbf{ }} & \multicolumn{2}{p{0.5cm}}{ } & \multicolumn{2}{c}{\textbf{M}} & \multicolumn{2}{c}{\textbf{SD}} & \multicolumn{2}{p{0.5cm}}{ }  & \multicolumn{2}{c}{\textbf{1}}  & \multicolumn{2}{c}{\textbf{2}}  & \multicolumn{2}{c}{\textbf{3}}  \\
+\midrule
+1. & Sepal (Length) & \multicolumn{2}{p{0.5cm}}{ }  & 5&.8433 & &.8281 & \multicolumn{2}{p{0.5cm}}{ }   & \multicolumn{2}{c}{1}   & \multicolumn{2}{c}{}   & \multicolumn{2}{c}{}  \\
+2. & Sepal (Width) & \multicolumn{2}{p{0.5cm}}{ }  & 3&.0573 & &.4359 & \multicolumn{2}{p{0.5cm}}{ }  & -&.1176  & \multicolumn{2}{c}{1}   & \multicolumn{2}{c}{}  \\
+3. & Petal (Length) & \multicolumn{2}{p{0.5cm}}{ }  & 3&.7580 & 1&.7653 & \multicolumn{2}{p{0.5cm}}{ }  & &.8718{$^{***}$} & -&.4284{$^{***}$}  & \multicolumn{2}{c}{1}  \\
+4. & Petal (Width) & \multicolumn{2}{p{0.5cm}}{ }  & 1&.1993 & &.7622 & \multicolumn{2}{p{0.5cm}}{ }  & &.8179{$^{***}$} & -&.3661{$^{***}$} & &.9629{$^{***}$} \\
+\bottomrule
+\end{tabularx}
+\begin{tabularx}{\textwidth}{{r@{}l}}
+{\tiny {$^{\dagger}$} } & {\tiny {$ p < .1000$} }  \\
+{\tiny {$^{*}$} } & {\tiny {$ p < .0500$} }  \\
+{\tiny {$^{**}$} } & {\tiny {$ p < .0100$} }  \\
+{\tiny {$^{***}$} } & {\tiny {$ p < .0010$} }  \\
+\multicolumn{2}{p{\textwidth}}{{\tiny Notes: }} \\
+\hline
+\end{tabularx}
+	
+\end{table}
+
+
+\end{document}
+
