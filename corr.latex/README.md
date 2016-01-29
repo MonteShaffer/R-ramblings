@@ -40,6 +40,7 @@ corr.latex(x, file="iris.tex", rotateMe = F);
 TODO
 - [x] Working example with most parameters
 - [ ] Code showSummary
+- [ ] Consider default spacing elements as parameters ? Empty columns as | exist between:  labels | stats | correlations ... final tweaking can just occur with Find/Replace in latex when you place it in a bigger file
 - [ ] Try-catch-exception to a dataframe x without colnames(x)
 - [ ] Code decimal form of diagonal=1.00 with the alignment using r@{}l
 - [ ] Code whichTriangle
