@@ -34,7 +34,7 @@ corr.latex(x, file="iris.tex", rotateMe = F, decimal=4);
 * **diagonal**: what value does the diagonal entry contain, default '1'
 * **whichTriangle**: which part of correlation matrix is displayed, c("lower","upper","both"), default is "lower"
 * **probs**: vector of probabilites to include significance and starts, default is c(.001,.01,.05,.10)
-* **sym**: symbols matching the probs, in the correct order, default is c("***","**","*","\\dagger") [Note: latex symbols that have an escape \dagger, using R, in string syntax need to be escaped to \\dagger]
+* **sym**: symbols matching the probs, in the correct order[Note: latex symbols that have an escape \dagger, using R, in string syntax need to be escaped to \\dagger], default is ```c("***","**","*","\\dagger")``` 
 
 
 TODO
