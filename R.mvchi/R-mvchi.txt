@@ -1,4 +1,3 @@
-```
 # Please Reference Dasgupta/Shaffer (2012) JAS article if you use this code
 #######	@article{Dasgupta:2012,
 #######		author		= {Dasgupta, Nairanjana and Shaffer, Monte J.},
@@ -144,4 +143,3 @@ simulateCritical = function(N,idxL,k,nsim=1000,verbose=FALSE)
 ## show more quantiles ##
 #> quantile(myCritical, probs=seq(from=0.9,to=0.99,by=0.01));
 ##################################################
-```
