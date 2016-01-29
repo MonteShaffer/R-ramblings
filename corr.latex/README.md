@@ -47,3 +47,4 @@ TODO
 - [X] Code whichTriangle
 - [ ] Possibly update probs, sym so it is a matched list
 - [ ] Possibly allow other summary statistics, e.g., pass a vector of items (with display names):  stats=c("mean","sd") with names(stats)=c("M","SD") or stats=c("Q1","median","Q3") with names(stats) unnecessary
+- [ ] Consider adding parameter bold=0.05 to bold values that are less than or equal to this threshold
