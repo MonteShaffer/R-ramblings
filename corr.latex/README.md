@@ -29,7 +29,7 @@ corr.latex(x, file="iris.tex", rotateMe = F, decimal=4);
 * **decimal**: number of decimals to use throughout the table with trailing zeroes if necessary.  Current formatting is no leading zeroes before the decimal point, default is ```2```
 * **showSummary**: should the summary statistics be included, or only the pairwise correlations, default is ```T(rue)```
 * **showNumbers**: should the labels on the left include an auto-incremented number that is then displayed on the top columns (if false, the top columns will have the labels again), default is ```T(rue)```
-* **lastDiagonal**: should the last diagonal entry be include (the trailing 1) or will the top columns have (N-1) entries, default is ```F(alse)```
+* **lastColumn**: should the last diagonal entry be include (the trailing 1) or will the top columns have (N-1) entries, default is ```F(alse)```
 * **type**: which correlation type should be computed from the Hmisc packing using R, c("pearson","spearman"), default is ```"pearson"``` [See http://www.inside-r.org/packages/cran/hmisc/docs/rcorr]
 * **diagonal**: what value does the diagonal entry contain, default ```'1'```
 * **whichTriangle**: which part of correlation matrix is displayed, c("lower","upper","both"), default is ```"lower"```
