@@ -19,7 +19,7 @@ x = iris[,1:4];
 colnames(x) = c("Sepal (Length)","Sepal (Width)","Petal (Length)","Petal (Width)");
  
 source("R-latex-corr.txt");
-corr.latex(x, file="iris.tex", rotateMe = F);
+corr.latex(x, file="iris.tex", rotateMe = F, decimal=4);
 ```
 
 ##Option List
