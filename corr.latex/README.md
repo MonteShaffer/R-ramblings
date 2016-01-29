@@ -39,10 +39,11 @@ corr.latex(x, file="iris.tex", rotateMe = F, decimal=4);
 
 TODO
 - [x] Working example with most parameters
-- [ ] Code showSummary
+- [X] Code showSummary
+- [X] Code lastColumn
 - [ ] Consider default spacing elements as parameters ? Empty columns as | exist between:  labels | stats | correlations ... final tweaking can just occur with Find/Replace in latex when you place it in a bigger file
 - [ ] Try-catch-exception to a dataframe x without colnames(x)
-- [ ] Code decimal form of diagonal=1.00 with the alignment using r@{}l
-- [ ] Code whichTriangle
+- [X] Code decimal form of diagonal=1.00 with the alignment using r@{}l
+- [X] Code whichTriangle
 - [ ] Possibly update probs, sym so it is a matched list
 - [ ] Possibly allow other summary statistics, e.g., pass a vector of items (with display names):  stats=c("mean","sd") with names(stats)=c("M","SD") or stats=c("Q1","median","Q3") with names(stats) unnecessary
