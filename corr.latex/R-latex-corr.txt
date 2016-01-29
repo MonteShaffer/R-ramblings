@@ -1,0 +1,179 @@
+
+# returns string w/o leading or trailing whitespace
+trim <- function (x) gsub("^\\s+|\\s+$", "", x)
+
+
+corr.latex = function(x,file="correlations.tex",rotateMe=T,decimal=2,showSummary=T,showNumbers=T,lastDiagonal=F,whichTriangle="lower",type="pearson",diagonal="1",probs=c(.001,.01,.05,.10),sym=c("***","**","*","\\dagger"))	
+	{ 
+	if (!require("stringr")) install.packages("stringr"); require("stringr");
+	probs = sort(probs,decreasing=F);
+	used = NULL; # has the symbol been used
+	# x is data frame with column names
+		names = colnames(x);
+	if(showNumbers) { numbers = seq(1,length(colnames(x))); max = max(numbers); }
+		x_ <- as.matrix(x);
+	if(showSummary) { 
+			means = t( t( round( colMeans(x_), decimal))); 
+			sds = t( t( round( sqrt( (rowMeans((t(x)-colMeans(x))^2)*((dim(x)[1])/(dim(x)[1]-1))) ) , decimal)));
+			} # sample sd
+	
+	start = "\\begin{table}[!htbp]";
+	end = "\\end{table}";
+	if(rotateMe)	{ 
+			start = "\\begin{sidewaystable}[!htbp]";
+			end = "\\end{sidewaystable}";
+			}
+
+	if (!require("Hmisc")) install.packages("Hmisc"); require("Hmisc");
+		
+		cor_ = rcorr(x_,type=type);		
+		R_ <- cor_$r; 
+			## format result as a string, rounding to decimal=2
+			## -1.11 is used temporarily to assure formatting with decimals
+			R_ <- format(round(cbind(rep(-1.11, ncol(x)), R_), decimal))[,-1] 
+
+			R_[upper.tri(R_, diag = TRUE)] <- "";
+			diag(R_) = diagonal;
+		P_ <- cor_$P; 
+			
+
+	
+	myLatex = "";
+		# need to escape \ with \\
+		# tab \t is not working as expected
+		myLatex = paste(myLatex,"\n","\\documentclass{article}",sep="\n");
+		myLatex = paste(myLatex,"\n","\\pagestyle{empty}",sep="\n");
+			myLatex = paste(myLatex,"\\usepackage{booktabs,tabularx,caption,multicol,rotating}",sep="\n");
+			myLatex = paste(myLatex,"\\usepackage[letterpaper, margin=0.25in]{geometry}",sep="\n");
+		myLatex = paste(myLatex,"\n","\\begin{document}",sep="\n");
+			myLatex = paste(myLatex,start,sep="\n");
+			myLatex = paste(myLatex,"\\setlength\\tabcolsep{2pt}",sep="\n");
+			myLatex = paste(myLatex,"\\footnotesize",sep="\n");
+			myLatex = paste(myLatex,"\\centering",sep="\n");
+			myLatex = paste(myLatex,"\\vspace{5in}",sep="\n");
+				myLatex = paste(myLatex,"\\hrulefill",sep="\n");
+				myLatex = paste(myLatex,"\\vspace{-.10cm}",sep="\n");
+				myLatex = paste(myLatex,"\\caption{Descriptive Statistics and Correlation Analysis} \\label{table:correlation}",sep="\n");
+				myLatex = paste(myLatex,"\\vspace{.10cm}",sep="\n");
+					# table syntax
+					mySyntax = "\\begin{tabularx}{\\textwidth}{r@{ \\ \\ }p{3cm} ";
+					mySyntax = paste(mySyntax, paste0(rep("r@{}l", 2+2-1+length(colnames(x))),collapse=""),"}",sep="");
+					myLatex = paste(myLatex,mySyntax,sep="\n");
+				myLatex = paste(myLatex,"\\toprule",sep="\n");
+					# headers
+					myHeader = "\\multicolumn{2}{c}{\\textbf{ }} & \\multicolumn{2}{p{0.5cm}}{ } & \\multicolumn{2}{c}{\\textbf{M}} & \\multicolumn{2}{c}{\\textbf{SD}} & \\multicolumn{2}{p{0.5cm}}{ } ";
+					myHeader = paste(myHeader, paste( sapply(numbers[-max], function(x){ paste0(" & \\multicolumn{2}{c}{\\textbf{",x,"}} ")  }), sep="", collapse=""), " \\\\", sep="");
+					myLatex = paste(myLatex,myHeader,sep="\n");
+				myLatex = paste(myLatex,"\\midrule",sep="\n");
+				myLatex = paste(myLatex," & \\\\",sep="\n");				 
+					# rows
+					for (i in 1:max)
+						{
+						myRow = paste(numbers[i],". & ",names[i],sep="");
+						# adjustable width between summary and correlation
+						myRow = paste(myRow, " & \\multicolumn{2}{p{0.5cm}}{ } ", sep="");
+						# M/SD
+						E = unlist( strsplit(as.character(means[i]),"[.]") );
+							l_ = trim(E[1]); 
+								if(l_ == "0") {l_ = "";}
+								if(l_ == "-0") {l_ = "-";}
+							r_ = trim(E[2]);
+								r_ = str_pad(r_, width=decimal, side="right", pad="0");
+						myE = paste(" & ",l_,"&",sep="");
+						myE = paste(myE,".",r_,sep="");
+
+						myRow = paste(myRow, myE,sep="");
+
+						E = unlist( strsplit(as.character(sds[i]),"[.]") );
+							l_ = trim(E[1]); 
+								if(l_ == "0") {l_ = "";}
+								if(l_ == "-0") {l_ = "-";}
+							r_ = trim(E[2]);
+								r_ = str_pad(r_, width=decimal, side="right", pad="0");
+						myE = paste(" & ",l_,"&",sep="");
+						myE = paste(myE,".",r_,sep="");
+
+						myRow = paste(myRow, myE,sep="");
+						# adjustable width between summary and correlation
+						myRow = paste(myRow, " & \\multicolumn{2}{p{0.5cm}}{ } ", sep="");
+
+
+						for (j in 1:(max -1) )
+							{
+							e_ = R_[i,j];
+							if(e_ == "")
+								{						
+								myRow = paste(myRow, paste( " & \\multicolumn{2}{c}{",e_,"} ",sep=""));
+								} else if(e_ == diagonal)
+								{
+								# if diagonal is 1, we are good, but if it is 1.00, we need to do the same split logic [TODO]
+								myRow = paste(myRow, paste( " & \\multicolumn{2}{c}{",e_,"} ",sep=""));
+								} else {
+									E = unlist( strsplit(e_,"[.]") );
+									l_ = trim(E[1]); 
+										if(l_ == "0") {l_ = "";}
+										if(l_ == "-0") {l_ = "-";}
+									r_ = trim(E[2]);
+										r_ = str_pad(r_, width=decimal, side="right", pad="0");
+									s_ = ""; # stars
+									p_ = P_[i,j];
+									if(p_ != "NA")
+										{
+										for(k in 1:length(probs))
+											{
+											p = probs[k];
+											if(p_ < p) 
+												{
+												s_ = paste("{$^{",sym[k],"}$}",sep="");
+												used = c(used,sym[k]);
+												break;
+												}
+											}
+										}
+									myE = paste(" & ",l_,"&",sep="");
+									myE = paste(myE,".",r_,sep="");
+									myE = paste(myE,s_,sep="");
+									
+									myRow = paste(myRow, myE,sep="");
+
+									}
+							}
+						myRow = paste(myRow," \\\\", sep="");
+						myLatex = paste(myLatex,myRow,sep="\n");
+						}
+				myLatex = paste(myLatex," & \\\\",sep="\n");
+				myLatex = paste(myLatex,"\\bottomrule",sep="\n");
+			myLatex = paste(myLatex,"\\end{tabularx}",sep="\n");
+				myLatex = paste(myLatex,"\\begin{tabularx}{\\textwidth}{{r@{}l}}",sep="\n");
+			
+					# unique(used) to only list the necessary probabilites, but what if one in the middle is missing, just manually adjust the output if an edge is missing
+					probs = sort(probs,decreasing=T);
+					K = sort(1:length(probs),decreasing=T);
+					for(k in 1:length(probs))
+						{
+						p = probs[k];
+						E = unlist( strsplit(as.character(p),"[.]") );
+							l_ = trim(E[1]); 
+								if(l_ == "0") {l_ = "";}
+								if(l_ == "-0") {l_ = "-";}
+							r_ = trim(E[2]);
+								r_ = str_pad(r_, width=decimal, side="right", pad="0");
+						p_ = paste(l_,".",r_,sep="");
+						k_ = K[k];
+						s = paste("{\\tiny {$^{",sym[k_],"}$} }",sep="");
+						mySym = paste(s," & {\\tiny {$ p < ",p_,sep="");
+						mySym = paste(mySym, "$} }  \\\\",sep="");
+						myLatex = paste(myLatex, mySym,sep="\n");
+						}						
+					myLatex = paste(myLatex,"\\multicolumn{2}{p{\\dimexpr 1.00\\linewidth-2\\tabcolsep}}{{\\tiny Notes: }} \\\\",sep="\n");	
+				myLatex = paste(myLatex,"\\hline",sep="\n");
+				myLatex = paste(myLatex,"\\end{tabularx}",sep="\n");
+			myLatex = paste(myLatex,"\t",end,sep="\n");
+		myLatex = paste(myLatex,"\n","\\end{document}",sep="\n");
+
+		
+	write(myLatex,file=file);	
+	}
+
+
+
