@@ -11,6 +11,7 @@ corr.latex = function(x,file="correlations.tex",rotateMe=T,decimal=2,showSummary
 	used = NULL; # has the symbol been used
 	# x is data frame with column names
 		names = colnames(x);
+		max = length(names);
 	if(showNumbers) { numbers = seq(1,length(colnames(x))); max = max(numbers); }
 		x_ <- as.matrix(x);
 	if(showSummary) { 
